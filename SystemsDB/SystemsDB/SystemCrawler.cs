@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 namespace Systems
 {
@@ -11,17 +12,18 @@ namespace Systems
             SystemCrawler("30000142");
             Console.Read();
         }
-        public static void SystemCrawler(string SystemID)
+        public static async void SystemCrawler(string SystemID)
         {
             VistitedSystems.Add(SystemID);
-            foreach (string System in SystemConnectsTo(SystemID))
+            foreach (string System in await SystemConnectsTo(SystemID))
             {
                 Console.Write("\r{0} Systems parsed", VistitedSystems.Count);
                 if (!VistitedSystems.Contains(System))SystemCrawler(System);
             }
         }
-        public static List<string> SystemConnectsTo(string SystemID) {
-            JObject jSystem = JObject.Parse(Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID)));
+        public static async Task<List<string>> SystemConnectsTo(string SystemID) {
+            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID));
+            JObject jSystem = JObject.Parse(json);
             List<string> Gates = new List<string>();
             foreach (var element in jSystem["stargates"])
             {
@@ -30,18 +32,20 @@ namespace Systems
             List<string> Systems = new List<string>();
             foreach(string gate in Gates)
             {
-                Systems.Add(GetSystemFromGate(gate));
+                Systems.Add(await GetSystemFromGate(gate));
             }
             return Systems;
         }
-        public static string GetSystemFromGate(string GateID)
+        public static async Task<string> GetSystemFromGate(string GateID)
         {
-            JObject jGate = JObject.Parse(Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format(@"/latest/universe/stargates/{0}/?datasource=tranquility", GateID)));
+            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format(@"/latest/universe/stargates/{0}/?datasource=tranquility", GateID));
+            JObject jGate = JObject.Parse(json);
             return jGate["destination"]["system_id"].ToString();
         }
-        public static string GetName(string SystemID)
+        public static async Task<string> GetName(string SystemID)
         {
-            JObject jSystem = JObject.Parse(Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID)));
+            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID));
+            JObject jSystem = JObject.Parse(json);
             return jSystem["name"].ToString();
         }
     }

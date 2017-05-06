@@ -8,3 +8,13 @@ C:\Users\lyube_000\Documents\c#\SystemsDB\SystemsDB\bin\Debug\RestSharp.xml
 C:\Users\lyube_000\Documents\c#\SystemsDB\SystemsDB\obj\Debug\SystemCrawler.csprojResolveAssemblyReference.cache
 C:\Users\lyube_000\Documents\c#\SystemsDB\SystemsDB\obj\Debug\SystemsDB.exe
 C:\Users\lyube_000\Documents\c#\SystemsDB\SystemsDB\obj\Debug\SystemsDB.pdb
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\SystemsDB.exe.config
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\obj\Debug\SystemsDB.exe
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\obj\Debug\SystemsDB.pdb
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\SystemsDB.exe
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\SystemsDB.pdb
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\Newtonsoft.Json.dll
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\RestSharp.dll
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\Newtonsoft.Json.xml
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\RestSharp.xml
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\obj\Debug\SystemCrawler.csprojResolveAssemblyReference.cache
