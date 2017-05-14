@@ -7,24 +7,40 @@ namespace SystemsDB
     class DBStuff
     {
 
-        public static void CreateSystemConnection(string name, string connectsto=null, string gateid = null)
+        public static void CreateEdge(string from, string to, string gateid)
         {
-           
-            
+            //auth
             using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic(Program.db_username, Program.db_password)))
             {
+                //session
                 using (var session = driver.Session())
                 {
+                    //write connections
+                    Console.WriteLine($"Connected {from} to {to} through {gateid}");
                     session.WriteTransaction(tx =>
                     {
-                        if (connectsto != null)
-                        {
-                            tx.Run($"MERGE (n:System {{name: '{name}'}})");
-                            tx.Run($"MATCH (a:System),(b:System) WHERE a.name= '{name}' AND b.name = '{connectsto}' MERGE (a)<-[r:`{gateid}`]-(b)");
-                        }
-                        else tx.Run($"CREATE (a:System) SET a.name = '{name}'");
+                        tx.Run($"MATCH (a:System),(b:System) WHERE a.name= '{from}' AND b.name = '{to}' MERGE (a)<-[r:`{gateid}`]-(b)");
+
                     });
                     
+                }
+            }
+        }
+        public static void CreateNode(string name)
+        {
+            //auth
+            using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic(Program.db_username, Program.db_password)))
+            {
+                //session
+                using (var session = driver.Session())
+                {
+                    //write nodes
+                    Console.WriteLine("Added: " + name);
+                    session.WriteTransaction(tx =>
+                    {
+                        tx.Run($"CREATE (a:System) SET a.name = '{name}'");
+                    });
+
                 }
             }
         }

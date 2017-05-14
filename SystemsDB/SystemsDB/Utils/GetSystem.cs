@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SystemsDB
 {
-    public class Crawler
+    public class GetSystem
     {
 
-        public static async Task<System> SystemCrawler(string SystemID)
+        public static async Task<System> GetSystemInfo(string SystemID)
         {
             
             return new System(await ESIGenericRequests.GetSystemInfo(SystemID),await SystemConnectsTo(SystemID));
@@ -20,7 +20,7 @@ namespace SystemsDB
             JObject jSystem = await ESIGenericRequests.GetSystemInfo(SystemID);
             JArray jConnections = (JArray)jSystem["stargates"];
             List<Connection> connections = new List<Connection>();
-            foreach (var element in jConnections)
+            foreach (var element in jConnections.Children())
             {
                 Connection _connection = new Connection(await ESIGenericRequests.GetSystemFromGate(element.ToString()));
                 connections.Add(_connection);

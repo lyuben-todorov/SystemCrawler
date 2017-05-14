@@ -78,12 +78,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\Crawler.cs" />
+    <Compile Include="Utils\Classes.cs" />
+    <Compile Include="Utils\GetSystem.cs" />
     <Compile Include="Utils\DBStuff.cs" />
     <Compile Include="main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ESIGenericRequests.cs" />
-    <Compile Include="Utils\RESTRequest.cs" />
+    <Compile Include="Utils\GetSystemList.cs" />
+    <Compile Include="Utils\REST.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
