@@ -11,6 +11,7 @@ namespace SystemsDB
     {
         public static void CreateSystemConnection(string name, string connectsto=null, string gateid = null)
         {
+            //proper credentials
             using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic("neo4j", "")))
             {
                 using (var session = driver.Session())
