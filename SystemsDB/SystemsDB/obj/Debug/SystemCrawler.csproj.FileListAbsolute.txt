@@ -28,3 +28,4 @@ C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\Syst
 C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\System.Security.Cryptography.X509Certificates.dll
 C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\Neo4j.Driver.pdb
 C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\Neo4j.Driver.xml
+C:\Users\lyube_000\Documents\c#\SystemCrawler\SystemsDB\SystemsDB\bin\Debug\.env.json

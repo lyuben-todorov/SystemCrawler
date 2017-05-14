@@ -255,3 +255,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+SystemsDB/SystemsDB/.env.json

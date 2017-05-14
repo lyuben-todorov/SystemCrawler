@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Neo4j.Driver.V1;
 
 namespace SystemsDB
 {
     class DBStuff
     {
+
         public static void CreateSystemConnection(string name, string connectsto=null, string gateid = null)
         {
-            //proper credentials
-            using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic("neo4j", "")))
+           
+            
+            using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic(Program.db_username, Program.db_password)))
             {
                 using (var session = driver.Session())
                 {
