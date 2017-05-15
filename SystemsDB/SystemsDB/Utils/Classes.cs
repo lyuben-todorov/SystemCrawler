@@ -9,15 +9,31 @@ namespace SystemsDB
     public class System
     {
         public string name;
+        public string security;
+        public string constid;
+        public string regionid;
+        public string constname;
+        public string regionname;
         public string id;
         public List<Connection> connections;
         public System(JObject _SystemInfo, List<Connection> _connections)
         {
             name = _SystemInfo["name"].ToString();
             id = _SystemInfo["system_id"].ToString();
-            //security = _SystemInfo["security_status"].ToString();
+            constid = _SystemInfo["constellation_id"].ToString();
+            security = _SystemInfo["security_status"].ToString();
             connections = _connections;
 
+        }
+        public static async Task<System> CreateAsync(JObject _SystemInfo, List<Connection> _connections)
+        {
+            var ret = new System(_SystemInfo,_connections);
+            JObject jConst = await ESIGenericRequests.GetConstInfo(ret.constid);
+            ret.constname = jConst["name"].ToString();
+            ret.regionid = jConst["region_id"].ToString();
+            JObject jRegion = await ESIGenericRequests.GetRegionInfo(ret.regionid);
+            ret.regionname = jRegion[""].ToString();
+            return ret;
         }
     }
     public class Connection

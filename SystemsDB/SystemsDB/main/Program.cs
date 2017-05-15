@@ -36,35 +36,37 @@ namespace SystemsDB
     {
         public static async Task Start()
         {
-            //Uncomment for first system commit(for new DBs) 
-            //DBStuff.CreateSystemConnection("Jita");
+            //add a list of systems (region,constellation, etc.)
+            //await AddMapChunk(await GetSystemList.Region("10000002")); // The Forge
+            //await AddMapChunk(await GetSystemList.Region("10000038")); // The Bleak Lands
 
-            //Add system's CONNECTIONS ONLY to graph
-            //await AddSystem("Itamo");
-            //await AddRegion(await GetSystemList.Region("10000002"));
-            await AddMapChunk(await GetSystemList.Region("10000038"));
-
-            //await AddSystem("30000129");
-        }
+            //foreach(string system in DBStuff.GetSystemsWithoutProperty("security"))
+            //{
+            //    Console.WriteLine(system);
+            //}
+            List<string> mylist = new List<string>(new string[] { "10000001","10000002","10000003"});
+            Console.WriteLine(await ESIGenericRequests.GetIDInfoPOST(mylist));
+    }
         public static async Task AddMapChunk(List<string> SystemIDList)
         {
             List<System> systems = new List<System>();
             //populate systems list
             foreach(string system in SystemIDList)
             {
+                Console.WriteLine(system);
                 systems.Add(await GetSystem.GetSystemInfo(system));
             }
             //populate nodes
             foreach (System system in systems)
             {
-                DBStuff.CreateNode(system.name);
+                DBStuff.CreateSystem(system);
             }
             //populate connections
             foreach (System system in systems)
             {
                 foreach(Connection connection in system.connections)
                 {
-                    DBStuff.CreateEdge(system.name, connection.systemName, connection.gateID);
+                    DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
                 }
             }
         }

@@ -12,9 +12,7 @@ namespace SystemsDB
     {
         public static async Task<JObject> GetSystemFromGate(string GateID)
         {
-            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format(@"/latest/universe/stargates/{0}/?datasource=tranquility", GateID));
-            JObject jGate = JObject.Parse(json);
-            return jGate;
+            return JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format(@"/latest/universe/stargates/{0}/?datasource=tranquility", GateID)));
         }
         public static async Task<string> ESISearch(string name, string category)
         {
@@ -29,18 +27,33 @@ namespace SystemsDB
                 return null;
             }
         }
-
+        public static async Task<JObject> GetConstInfo(string ConstID)
+        {
+            return JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", $"/latest/universe/constellations/{ConstID}/?datasource=tranquility"));
+        }
+        public static async Task<JObject> GetRegionInfo(string RegionID)
+        {
+            return JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", $"/latest/universe/regions/{RegionID}/?datasource=tranquility"));
+        }
+        public static async Task<JArray> GetIDInfoPOST(List<string> IDList)
+        {
+            JArray jArray = new JArray();
+            foreach (string id in IDList)
+            {
+                jArray.Add(Convert.ToInt32(id));
+            }
+            Console.WriteLine(jArray.ToString());
+            return JArray.Parse(await Requests.POSTRequest(@"https://esi.tech.ccp.is", "/latest/universe/names/?datasource=tranquility", jArray.ToString()));
+        }
 
         //this is retarded
         public static async Task<JObject> GetSystemInfo(string SystemID)
         {
-            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID));
-            return JObject.Parse(json);
+            return JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID)));
         }
         public static async Task<string> GetSystemName(string SystemID)
         {
-            string json = await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID));
-            return JObject.Parse(json)["name"].ToString();
+            return JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", string.Format("/latest/universe/systems/{0}/?datasource=tranquility&language=en-us", SystemID)))["name"].ToString();
         }
 
     }
