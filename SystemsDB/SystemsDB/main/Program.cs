@@ -39,13 +39,8 @@ namespace SystemsDB
             //add a list of systems (region,constellation, etc.)
             //await AddMapChunk(await GetSystemList.Region("10000002")); // The Forge
             //await AddMapChunk(await GetSystemList.Region("10000038")); // The Bleak Lands
-
-            //foreach(string system in DBStuff.GetSystemsWithoutProperty("security"))
-            //{
-            //    Console.WriteLine(system);
-            //}
-            List<string> mylist = new List<string>(new string[] { "10000001","10000002","10000003"});
-            Console.WriteLine(await ESIGenericRequests.GetIDInfoPOST(mylist));
+            //await AddMapChunk(await GetSystemList.Region("10000028"));// Molden Heath
+            await AddMapChunk(await GetSystemList.Constellation("20000003"));
     }
         public static async Task AddMapChunk(List<string> SystemIDList)
         {
@@ -53,7 +48,6 @@ namespace SystemsDB
             //populate systems list
             foreach(string system in SystemIDList)
             {
-                Console.WriteLine(system);
                 systems.Add(await GetSystem.GetSystemInfo(system));
             }
             //populate nodes

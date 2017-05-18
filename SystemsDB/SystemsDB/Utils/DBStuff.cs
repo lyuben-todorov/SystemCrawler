@@ -17,29 +17,24 @@ namespace SystemsDB
                 //session
                 using (var session = driver.Session())
                 {
-                    
-                    //write connections
                     Console.WriteLine($"Connected {from} to {to} through {gateid}");
                     session.WriteTransaction(tx =>
                     {
-                        tx.Run($"MATCH (a:System),(b:System) WHERE a.name= '{from}' AND b.name = '{to}' MERGE (a)<-[r:`{gateid}`]-(b)");
+                        tx.Run($"MATCH (a:System),(b:System) WHERE a.name= '{from}' AND b.name = '{to}' MERGE (a)-[r:`{gateid}`]->(b)");
                     });
                 }
             }
         }
         public static void CreateSystem(System system)
         {
-            //auth
             using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic(Program.db_username, Program.db_password)))
             {
-                //session
                 using (var session = driver.Session())
                 {
-                    //write transactions
                     Console.WriteLine($"Added {system.name} {system.security} in {system.constname} in {system.regionname}");
                     session.WriteTransaction(tx =>
                     {
-                        tx.Run($"CREATE (a:System{{name:'{system.name}', security:'{system.security}', region:''}})");
+                        tx.Run($"CREATE (a:System{{name:'{system.name}', security:'{system.security}', region:'{system.regionname}', constellation:'{system.constname}', constid:'{system.constid}', regionid:'{system.regionid}', systemid:'{system.id}'}})");
                     });
 
                 }

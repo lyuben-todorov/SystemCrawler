@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace SystemsDB
     public class System
     {
         public string name;
-        public string security;
+        public double security;
         public string constid;
         public string regionid;
         public string constname;
@@ -21,7 +21,7 @@ namespace SystemsDB
             name = _SystemInfo["name"].ToString();
             id = _SystemInfo["system_id"].ToString();
             constid = _SystemInfo["constellation_id"].ToString();
-            security = _SystemInfo["security_status"].ToString();
+            security = Math.Round((double)_SystemInfo["security_status"],1);
             connections = _connections;
 
         }
@@ -32,10 +32,17 @@ namespace SystemsDB
             ret.constname = jConst["name"].ToString();
             ret.regionid = jConst["region_id"].ToString();
             JObject jRegion = await ESIGenericRequests.GetRegionInfo(ret.regionid);
-            ret.regionname = jRegion[""].ToString();
+
+
+            File.AppendAllText(@"regioninfo.json", jRegion.ToString());
+
+
+            ret.regionname = jRegion["name"].ToString();
             return ret;
+            
         }
     }
+
     public class Connection
     {
         public string systemName;

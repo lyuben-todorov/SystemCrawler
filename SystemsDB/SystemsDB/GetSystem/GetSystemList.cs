@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +14,8 @@ namespace SystemsDB
             List<string> ConstList = new List<string>();
 
             JObject jRegion = JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", $"/latest/universe/regions/{ID}/?datasource=tranquility"));
-            
+
+
             JArray jConsts = (JArray)jRegion["constellations"];
             foreach (var element in jConsts)
             {
@@ -35,13 +36,16 @@ namespace SystemsDB
 
             JObject jConst = await ESIGenericRequests.GetConstInfo(ID);
 
+
+            File.AppendAllText(@"constinfo.json", jConst.ToString());
+
+
             JArray jSystems = (JArray)jConst["systems"];
             foreach(var element in jSystems)
             {
                 SystemList.Add(element.ToString());
-                
+   
             }
-
             return SystemList;
         }
  
