@@ -9,45 +9,59 @@ namespace SystemsDB
 {
     class GetSystemList
     {
-        public static async Task<List<string>> Region(string ID)
+        public static async Task<Region> Region(string ID)
         {
-            List<string> ConstList = new List<string>();
+           
+            JObject jRegion = await ESIGenericRequests.GetRegionInfo(ID);
 
-            JObject jRegion = JObject.Parse(await Requests.GETRequest(@"https://esi.tech.ccp.is", $"/latest/universe/regions/{ID}/?datasource=tranquility"));
+            string RN = jRegion["name"].ToString();
+            string RID = jRegion["region_id"].ToString();
 
 
             JArray jConsts = (JArray)jRegion["constellations"];
+            List<string> ConstIDList = new List<string>();
             foreach (var element in jConsts)
             {
-                ConstList.Add(element.ToString());
+                ConstIDList.Add(element.ToString());
             }
-            
-            List<string> SystemList = new List<string>();
-            foreach(string constellation in ConstList)
+
+
+            List<Constellation> ConstList = new List<Constellation>();
+            foreach(string constellation in ConstIDList)
             {
-                SystemList.AddRange(await Constellation(constellation));
+                ConstList.Add(await Constellation(constellation, RN, RID));
             }
-                
-            return SystemList;
+
+            Region region = new Region(jRegion["name"].ToString(),ConstList);
+
+            return region;
         }
-        public static async Task<List<string>> Constellation(string ID)
+
+
+        public static async Task<Constellation> Constellation(string ID, string RN=null, string RID=null)
         {
-            List<string> SystemList = new List<string>();
-
+            
             JObject jConst = await ESIGenericRequests.GetConstInfo(ID);
-
+            if (RN == null && RID == null)
+            {
+                RID = jConst["region_id"].ToString();
+                var r = await ESIGenericRequests.GetRegionInfo(RID);
+                RN = r["name"].ToString();
+            }
+            string CN = jConst["name"].ToString();
+            string CID= jConst["constellation_id"].ToString();
 
             File.AppendAllText(@"constinfo.json", jConst.ToString());
 
-
             JArray jSystems = (JArray)jConst["systems"];
-            foreach(var element in jSystems)
+            List<System> SystemList = new List<System>();
+            foreach (var element in jSystems)
             {
-                SystemList.Add(element.ToString());
-   
+                SystemList.Add(System.Create(await GetSystem.GetSystemInfo(element.ToString()),CN,CID,RN,RID));
             }
-            return SystemList;
+
+            Constellation constellation = new Constellation(jConst["name"].ToString(),SystemList);
+            return constellation;
         }
- 
     }
 }

@@ -12,7 +12,7 @@ namespace SystemsDB
         public static async Task<System> GetSystemInfo(string SystemID)
         {
             JObject jSystem = await ESIGenericRequests.GetSystemInfo(SystemID);
-            return await System.CreateAsync(jSystem, await SystemConnectsTo(jSystem));
+            return new System(jSystem, await SystemConnectsTo(jSystem));
             
         }
         private static async Task<List<Connection>> SystemConnectsTo(JObject jSystem)

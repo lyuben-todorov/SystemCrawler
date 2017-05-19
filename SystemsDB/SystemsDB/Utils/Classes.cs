@@ -25,21 +25,35 @@ namespace SystemsDB
             connections = _connections;
 
         }
-        public static async Task<System> CreateAsync(JObject _SystemInfo, List<Connection> _connections)
+        public static System Create(System _system, string CN, string CID, string RN, string RID)
         {
-            var ret = new System(_SystemInfo,_connections);
-            JObject jConst = await ESIGenericRequests.GetConstInfo(ret.constid);
-            ret.constname = jConst["name"].ToString();
-            ret.regionid = jConst["region_id"].ToString();
-            JObject jRegion = await ESIGenericRequests.GetRegionInfo(ret.regionid);
-
-
-            File.AppendAllText(@"regioninfo.json", jRegion.ToString());
-
-
-            ret.regionname = jRegion["name"].ToString();
+            var ret = _system;
+            ret.constname = CN;
+            ret.constid = CID;
+            ret.regionname = RN;
+            ret.regionid = RID;
             return ret;
             
+        }
+    }
+    public class Constellation
+    {
+        public string name;
+        public List<System> SList;
+        public Constellation(string _name, List<System> _SList)
+        {
+            name = _name;
+            SList = _SList;
+        }
+    }
+    public class Region
+    {
+        public string name;
+        public List<Constellation> CList;
+        public Region(string _name, List<Constellation> _CList)
+        {
+            name = _name;
+            CList = _CList;
         }
     }
 

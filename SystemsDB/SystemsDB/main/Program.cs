@@ -40,27 +40,28 @@ namespace SystemsDB
             //await AddMapChunk(await GetSystemList.Region("10000002")); // The Forge
             //await AddMapChunk(await GetSystemList.Region("10000038")); // The Bleak Lands
             //await AddMapChunk(await GetSystemList.Region("10000028"));// Molden Heath
-            await AddMapChunk(await GetSystemList.Constellation("20000003"));
+            await AddMapChunk(await GetSystemList.Region("10000046"));
     }
-        public static async Task AddMapChunk(List<string> SystemIDList)
+        public static async Task AddMapChunk(Region region = null, Constellation constellation = null)
         {
-            List<System> systems = new List<System>();
-            //populate systems list
-            foreach(string system in SystemIDList)
-            {
-                systems.Add(await GetSystem.GetSystemInfo(system));
-            }
+
             //populate nodes
-            foreach (System system in systems)
+            foreach(Constellation Const in region.CList)
             {
-                DBStuff.CreateSystem(system);
+                foreach (System system in Const.SList)
+                {
+                    DBStuff.CreateSystem(system);
+                }
             }
             //populate connections
-            foreach (System system in systems)
+            foreach (Constellation Const in region.CList)
             {
-                foreach(Connection connection in system.connections)
+                foreach (System system in Const.SList)
                 {
-                    DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
+                    foreach (Connection connection in system.connections)
+                    {
+                        DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
+                    }
                 }
             }
         }
