@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +16,12 @@ namespace SystemsDB
         private static async Task<List<Connection>> SystemConnectsTo(JObject jSystem)
         {
             JArray jConnections = (JArray)jSystem["stargates"];
-            File.AppendAllText(@"systeminfo.json", jSystem.ToString());
+            await SystemDB.systemlog.WriteLineAsync(jSystem.ToString());
             List<Connection> connections = new List<Connection>();
             foreach (var element in jConnections.Children())
             {
                 JObject jConnection = await ESIGenericRequests.GetSystemFromGate(element.ToString());
+                await SystemDB.gatelog.WriteLineAsync(jConnection.ToString());
                 Connection _connection = new Connection(jConnection);
                 connections.Add(_connection);
             }

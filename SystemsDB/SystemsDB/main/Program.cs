@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -23,44 +22,53 @@ namespace SystemsDB
             }
             var task = SystemDB.Start();
             //execute async
-            try { task.Wait();}
-            catch (Exception e){ Console.WriteLine(e); }
-            finally { Console.Read(); }
-            
+            try { task.Wait(); }
+            catch (Exception e) { Console.WriteLine(e); }
+            finally { SystemDB.textlog.Close(); SystemDB.regionlog.Close(); SystemDB.constlog.Close(); SystemDB.systemlog.Close(); SystemDB.gatelog.Close(); Console.Read(); }
         }
     }
 
-
-
     public class SystemDB
     {
+        //logging
+        public static StreamWriter textlog= new StreamWriter("logfile.txt");
+        //caching   
+        public static StreamWriter regionlog = new StreamWriter("regioninfo.json");
+        public static StreamWriter constlog = new StreamWriter("constinfo.json");
+        public static StreamWriter systemlog = new StreamWriter("systeminfo.json");
+        public static StreamWriter gatelog = new StreamWriter("gateinfo.json");
         public static async Task Start()
         {
-            //add a list of systems (region,constellation, etc.)
-            //await AddMapChunk(await GetSystemList.Region("10000002")); // The Forge
-            //await AddMapChunk(await GetSystemList.Region("10000038")); // The Bleak Lands
-            //await AddMapChunk(await GetSystemList.Region("10000028"));// Molden Heath
-            await AddMapChunk(await GetSystemList.Region("10000046"));
-    }
-        public static async Task AddMapChunk(Region region = null, Constellation constellation = null)
+            //Set of regions
+            //await AddMapChunk(await GetSystemList.MapChunk(new List<string> { "10000046" }));
+            
+            //Complete map
+            await AddMapChunk(await GetSystemList.MapChunk(await ESIGenericRequests.GetCurrentRegionList()));
+        }
+        public static async Task AddMapChunk(MapChunk MC)
         {
-
             //populate nodes
-            foreach(Constellation Const in region.CList)
+            foreach (Region region in MC.RList)
             {
-                foreach (System system in Const.SList)
+                foreach (Constellation Const in region.CList)
                 {
-                    DBStuff.CreateSystem(system);
+                    foreach (System system in Const.SList)
+                    {
+                        DBStuff.CreateSystem(system);
+                    }
                 }
             }
             //populate connections
-            foreach (Constellation Const in region.CList)
+            foreach (Region region in MC.RList)
             {
-                foreach (System system in Const.SList)
+                foreach (Constellation Const in region.CList)
                 {
-                    foreach (Connection connection in system.connections)
+                    foreach (System system in Const.SList)
                     {
-                        DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
+                        foreach (Connection connection in system.connections)
+                        {
+                            DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
+                        }
                     }
                 }
             }

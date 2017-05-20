@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace SystemsDB
 {
@@ -21,9 +19,8 @@ namespace SystemsDB
             name = _SystemInfo["name"].ToString();
             id = _SystemInfo["system_id"].ToString();
             constid = _SystemInfo["constellation_id"].ToString();
-            security = Math.Round((double)_SystemInfo["security_status"],1);
+            security = Math.Round((double)_SystemInfo["security_status"], 1);
             connections = _connections;
-
         }
         public static System Create(System _system, string CN, string CID, string RN, string RID)
         {
@@ -33,7 +30,6 @@ namespace SystemsDB
             ret.regionname = RN;
             ret.regionid = RID;
             return ret;
-            
         }
     }
     public class Constellation
@@ -56,7 +52,14 @@ namespace SystemsDB
             CList = _CList;
         }
     }
-
+    public class MapChunk
+    {
+        public List<Region> RList;
+        public MapChunk(List<Region> _RList)
+        {
+            RList = _RList;
+        }
+    }
     public class Connection
     {
         public string systemName;
@@ -64,6 +67,7 @@ namespace SystemsDB
         public string gateID;
         public Connection(JObject ConnectionInfo)
         {
+
             gateID = ConnectionInfo["stargate_id"].ToString();
             systemID = ConnectionInfo["system_id"].ToString();
             systemName = ConnectionInfo["name"].ToString().Split('(', ')')[1];

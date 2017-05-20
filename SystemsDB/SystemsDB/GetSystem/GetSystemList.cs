@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +6,16 @@ namespace SystemsDB
 {
     class GetSystemList
     {
+        public static async Task<MapChunk> MapChunk(List<string> RIDList)
+        {
+            List<Region> RList = new List<Region>();
+            foreach(string region in RIDList)
+            {
+                RList.Add(await Region(region));
+            }
+            MapChunk MC = new MapChunk(RList);
+            return MC;
+        }
         public static async Task<Region> Region(string ID)
         {
            
@@ -17,6 +24,7 @@ namespace SystemsDB
             string RN = jRegion["name"].ToString();
             string RID = jRegion["region_id"].ToString();
 
+            await SystemDB.regionlog.WriteLineAsync(jRegion.ToString());
 
             JArray jConsts = (JArray)jRegion["constellations"];
             List<string> ConstIDList = new List<string>();
@@ -24,20 +32,15 @@ namespace SystemsDB
             {
                 ConstIDList.Add(element.ToString());
             }
-
-
             List<Constellation> ConstList = new List<Constellation>();
             foreach(string constellation in ConstIDList)
             {
                 ConstList.Add(await Constellation(constellation, RN, RID));
             }
-
             Region region = new Region(jRegion["name"].ToString(),ConstList);
 
             return region;
         }
-
-
         public static async Task<Constellation> Constellation(string ID, string RN=null, string RID=null)
         {
             
@@ -50,8 +53,8 @@ namespace SystemsDB
             }
             string CN = jConst["name"].ToString();
             string CID= jConst["constellation_id"].ToString();
-
-            File.AppendAllText(@"constinfo.json", jConst.ToString());
+            
+            await SystemDB.constlog.WriteLineAsync(jConst.ToString());
 
             JArray jSystems = (JArray)jConst["systems"];
             List<System> SystemList = new List<System>();
