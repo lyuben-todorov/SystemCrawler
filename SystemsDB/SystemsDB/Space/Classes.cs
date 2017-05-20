@@ -32,6 +32,11 @@ namespace SystemsDB
             return ret;
         }
     }
+    public class JAttributes
+    {
+        public string _Class;
+        public string effect;
+    }
     public class Constellation
     {
         public string name;

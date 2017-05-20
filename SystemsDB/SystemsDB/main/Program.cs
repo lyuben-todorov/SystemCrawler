@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SystemsDB
 {
@@ -39,13 +40,20 @@ namespace SystemsDB
         public static StreamWriter gatelog = new StreamWriter("gateinfo.json");
         public static async Task Start()
         {
-            //Set of regions
-            //await AddMapChunk(await GetSystemList.MapChunk(new List<string> { "10000046" }));
-            
-            //Complete map
-            await AddMapChunk(await GetSystemList.MapChunk(await ESIGenericRequests.GetCurrentRegionList()));
+            //Set of k regions
+            //await AddKMapChunk(await MakeImport.MapChunk(new List<string> { "10000046" }));
+
+            //Set of j regions
+            await AddJMapChunk(await MakeImport.MapChunk(new List<string> { "11000003" }));
+
+            //Complete k map
+            //await AddKMapChunk(await MakeImport.MapChunk(await ESIGenericRequests.GetKRegionList()));
+
+            //Complete j map
+            //await AddJMapChunk(await MakeImport.MapChunk(await ESIGenericRequests.GetJRegionList()));
+
         }
-        public static async Task AddMapChunk(MapChunk MC)
+        public static async Task AddKMapChunk(MapChunk MC)
         {
             //populate nodes
             foreach (Region region in MC.RList)
@@ -54,21 +62,51 @@ namespace SystemsDB
                 {
                     foreach (System system in Const.SList)
                     {
-                        DBStuff.CreateSystem(system);
+                        Transactions.CreateSystem(system);
                     }
                 }
             }
             //populate connections
             foreach (Region region in MC.RList)
             {
-                foreach (Constellation Const in region.CList)
+                foreach (Constellation constellation in region.CList)
                 {
-                    foreach (System system in Const.SList)
+                    foreach (System system in constellation.SList)
                     {
                         foreach (Connection connection in system.connections)
                         {
-                            DBStuff.CreateConnection(system.name, connection.systemName, connection.gateID);
+                            Transactions.CreateConnection(system.name, connection.systemName, connection.gateID);
                         }
+                    }
+                }
+            }
+        }
+
+        //j-space
+        public static async Task AddJMapChunk(MapChunk MC)
+        {
+            //populate nodes
+            foreach (Region region in MC.RList)
+            {
+                Transactions.CreateJRegion(region);
+                foreach (Constellation constellation in region.CList)
+                {
+                    Transactions.CreateJConstellation(constellation);
+                    foreach (System system in constellation.SList)
+                    {
+                        Transactions.CreateSystem(system, true);
+                    }
+                }
+            }
+            //populate connections
+            foreach (Region region in MC.RList)
+            {
+                foreach (Constellation constellation in region.CList)
+                {
+                    Transactions.CreateJConnection(region.name, constellation.name);
+                    foreach (System system in constellation.SList)
+                    {
+                        Transactions.CreateJConnection(constellation.name, system.name);
                     }
                 }
             }

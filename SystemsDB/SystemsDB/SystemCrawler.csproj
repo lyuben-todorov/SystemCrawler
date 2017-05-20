@@ -78,18 +78,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\Classes.cs" />
-    <Compile Include="GetSystem\GetSystem.cs" />
-    <Compile Include="Utils\DBStuff.cs" />
+    <Compile Include="Space\GetJProps.cs" />
+    <Compile Include="Space\Classes.cs" />
+    <Compile Include="Transactions\Transactions.cs" />
     <Compile Include="main\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ESIGenericRequests.cs" />
-    <Compile Include="GetSystem\GetSystemList.cs" />
+    <Compile Include="Space\MakeImport.cs" />
     <Compile Include="Utils\REST.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <Content Include=".env.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="jsystems.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

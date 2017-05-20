@@ -46,15 +46,29 @@ namespace SystemsDB
             }
             return JArray.Parse(await Requests.POSTRequest(BASEURI, "/latest/universe/names/?datasource=tranquility", jArray.ToString()));
         }
-        public static async Task<List<string>> GetCurrentRegionList()
+        public static async Task<List<string>> GetKRegionList()
         {
             List<string> RList = new List<string>();
             JArray jRegions = JArray.Parse(await Requests.GETRequest(BASEURI, "/latest/universe/regions/?datasource=tranquility"));
             foreach(var element in jRegions)
             {
-                RList.Add(element.ToString());
+                //k-regions start with 10
+                string sub = element.ToString().Substring(0, 2);
+                if(sub == "10")RList.Add(element.ToString());
             }
             return RList;
+        }
+        public static async Task<List<string>> GetJRegionList()
+        {
+            List<string> JRList = new List<string>();
+            JArray jJRegions = JArray.Parse(await Requests.GETRequest(BASEURI, "/latest/universe/regions/?datasource=tranquility"));
+            foreach (var element in jJRegions)
+            {
+                //k-regions start with 10
+                string sub = element.ToString().Substring(0, 2);
+                if (sub == "11") JRList.Add(element.ToString());
+            }
+            return JRList;
         }
         public static async Task<JObject> GetSystemInfo(string SystemID)
         {
