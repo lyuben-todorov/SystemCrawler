@@ -5,5 +5,7 @@ The Forge
 ![The Forge](http://i.imgur.com/X6bZBJo.png)    
 Drone Regions    
 ![Drone Regions](http://i.imgur.com/fqjqDO5.png)    
+Wormhole Representation    
+![Wormhole Representation](http://i.imgur.com/VUao0Iq.png)    
 Shortest Path    
 ![Shortest Path](http://i.imgur.com/qbuXIaG.png)
