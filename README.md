@@ -6,6 +6,6 @@ The Forge
 Drone Regions    
 ![Drone Regions](http://i.imgur.com/fqjqDO5.png)    
 Wormhole Representation    
-![Wormhole Representation](http://i.imgur.com/VUao0Iq.png)    
+![Wormhole Representation](http://i.imgur.com/uFAgvX7.png)    
 Shortest Path    
 ![Shortest Path](http://i.imgur.com/qbuXIaG.png)
