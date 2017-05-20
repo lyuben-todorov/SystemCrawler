@@ -4,4 +4,6 @@ Recreates eve map data to a Neo4j graph using ESI.
 The Forge    
 ![The Forge](http://i.imgur.com/X6bZBJo.png)    
 Bleak Lands    
-![Bleak Lands](http://i.imgur.com/RIC67ps.png)
+![Bleak Lands](http://i.imgur.com/RIC67ps.png)    
+Shortest Path    
+![Shortest Path](http://i.imgur.com/qbuXIaG.png)
