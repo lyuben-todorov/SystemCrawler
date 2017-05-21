@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 namespace SystemsDB
 {
+    //read info from systems.json 
     public class GetJProps
     {
         public static List<string> GetStaticList(string SystemID)

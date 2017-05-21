@@ -44,13 +44,13 @@ namespace SystemsDB
             //await AddKMapChunk(await MakeImport.MapChunk(new List<string> { "10000046" }));
 
             //Set of j regions
-            await AddJMapChunk(await MakeImport.MapChunk(new List<string> { "11000003" }));
+            //await AddJMapChunk(await MakeImport.MapChunk(new List<string> { "11000003" }));
 
             //Complete k map
             //await AddKMapChunk(await MakeImport.MapChunk(await ESIGenericRequests.GetKRegionList()));
 
             //Complete j map
-            //await AddJMapChunk(await MakeImport.MapChunk(await ESIGenericRequests.GetJRegionList()));
+            await AddJMapChunk(await MakeImport.MapChunk(await ESIGenericRequests.GetJRegionList()));
 
         }
         public static async Task AddKMapChunk(MapChunk MC)
@@ -85,7 +85,7 @@ namespace SystemsDB
         //j-space
         public static async Task AddJMapChunk(MapChunk MC)
         {
-            //populate nodes
+            //populate regions, constellations, systems
             foreach (Region region in MC.RList)
             {
                 Transactions.CreateJRegion(region);
@@ -98,7 +98,7 @@ namespace SystemsDB
                     }
                 }
             }
-            //populate connections
+            //populate possession
             foreach (Region region in MC.RList)
             {
                 foreach (Constellation constellation in region.CList)

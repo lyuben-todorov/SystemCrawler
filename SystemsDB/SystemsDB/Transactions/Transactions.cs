@@ -39,7 +39,7 @@ namespace SystemsDB
                         });
                     }
                 }
-            else // add class statics and effect in case it's j-space
+            else // add class, statics and effect in case it's j-space
             {
                 using (var driver = GraphDatabase.Driver(new Uri("bolt://localhost:7687"), AuthTokens.Basic(Program.db_username, Program.db_password)))
                 {
@@ -54,7 +54,7 @@ namespace SystemsDB
                             {
                                 Console.WriteLine($"Added {_static} static to {system.name}");
                                 SystemDB.textlog.WriteLine($"Added {_static} static to {system.name}");
-                                tx.Run($"CREATE (a:Static{{name:'{_static}'}}) MERGE (b:System {{name: '{system.name}'}})-[r:HAS_STATIC]->(a)");
+                                tx.Run($"MATCH (a:System {{name:'{system.name}'}}) CREATE (b:Static {{name:'{_static}'}}) MERGE (a)-[r:HAS_STATIC]->(b)");
                             }
                         });
                     }

@@ -11,7 +11,7 @@ namespace SystemsDB
             List<Region> RList = new List<Region>();
             foreach (string region in RIDList)
             {
-                RList.Add(await Region(region);
+                RList.Add(await Region(region));
             }
             MapChunk MC = new MapChunk(RList);
             return MC;
