@@ -4,8 +4,6 @@
 #Project variables
 SystemsDB/SystemsDB/.env.json
 
-
-
 # User-specific files
 *.suo
 *.user
